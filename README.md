@@ -30,7 +30,7 @@ It uses the same JSONForms version and custom renderers as the workbench, so wha
 
 ## Live playground
 
-The playground is hosted on GitHub Pages at [playground.projectcontinuum.org](https://playground.projectcontinuum.org). Every push to `main` builds and deploys it. The hosted version can only reach an API server that allows cross-origin requests from that site.
+The playground is hosted on GitHub Pages at [playground.tools.projectcontinuum.org](https://playground.tools.projectcontinuum.org). Every push to `main` builds and deploys it. The hosted version can only reach an API server that allows cross-origin requests from that site.
 
 ## Quick start
 
