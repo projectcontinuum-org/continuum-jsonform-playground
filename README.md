@@ -28,6 +28,10 @@ It uses the same JSONForms version and custom renderers as the workbench, so wha
 - **Dialog preview:** open the form in a modal that mimics the workbench node dialog.
 - **Light and dark themes.**
 
+## Live playground
+
+The playground is hosted on GitHub Pages at [playground.projectcontinuum.org](https://playground.projectcontinuum.org). Every push to `main` builds and deploys it. The hosted version can only reach an API server that allows cross-origin requests from that site.
+
 ## Quick start
 
 You need **Node.js 20 or later**.

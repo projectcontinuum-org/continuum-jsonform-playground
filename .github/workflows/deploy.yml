@@ -1,0 +1,68 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Save build output to temp
+        run: cp -r dist/. /tmp/dist-output
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create gh-pages branch if it does not exist
+        run: |
+          if ! git ls-remote --exit-code origin gh-pages; then
+            echo "Creating gh-pages branch..."
+            git checkout --orphan gh-pages
+            git rm -rf .
+            git commit --allow-empty -m "Initialize gh-pages"
+            git push origin gh-pages
+            git checkout main
+          fi
+
+      - name: Push build to gh-pages
+        run: |
+          git fetch origin gh-pages
+          git checkout -B gh-pages origin/gh-pages
+
+          git rm -rf . > /dev/null || true
+          git clean -fd
+
+          cp -r /tmp/dist-output/. .
+          echo "playground.projectcontinuum.org" > CNAME
+
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to deploy"
+          else
+            git commit -m "deploy: build from main@$(git rev-parse --short HEAD)"
+            git push origin gh-pages
+          fi
